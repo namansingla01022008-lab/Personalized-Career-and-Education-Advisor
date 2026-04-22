@@ -43,7 +43,7 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
  * Enforces the 30-query/day limit for AI services.
  */
 export const rateLimitedProcedure = protectedProcedure.use(async ({ ctx, next }) => {
-  const { success, remaining } = await llmRateLimiter.limit(ctx.userId)
+  const { success } = await llmRateLimiter.limit(ctx.userId)
   if (!success) {
     throw new TRPCError({
       code: 'TOO_MANY_REQUESTS',

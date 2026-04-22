@@ -24,6 +24,12 @@ export default function SignUpPage() {
         callbackURL: '/onboarding/step-1',
       })
       if (signUpError) {
+        console.error('BetterAuth Sign-Up Error Details:', {
+          message: signUpError.message,
+          status: signUpError.status,
+          statusText: signUpError.statusText,
+          code: signUpError.code,
+        })
         setError(signUpError.message || 'Sign up failed')
       } else {
         router.push('/onboarding/step-1')

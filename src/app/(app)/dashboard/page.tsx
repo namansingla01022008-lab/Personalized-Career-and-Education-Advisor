@@ -74,8 +74,11 @@ export default function DashboardPage() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="type-caption text-ink-50 mb-1">Avg. Salary</p>
-                        <p className="type-body text-sm font-bold text-ink">₹{(career.salaryRange as any)?.mid / 100000}L/pa</p>
+                        <p className="type-body text-sm font-bold text-ink">
+                          {career.salaryRange && typeof career.salaryRange === 'object' && 'mid' in career.salaryRange
+                            ? `₹${((career.salaryRange as { mid: number }).mid / 100000).toFixed(1)}L/pa`
+                            : '---'}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -124,7 +127,7 @@ export default function DashboardPage() {
             <section className="bg-ink text-linen rounded-r-xl p-8 border border-ink-80 shadow-lg">
               <h3 className="type-label text-volt mb-8 block font-bold tracking-widest leading-none">Skill Progress</h3>
               <div className="space-y-6">
-                {profile?.skills?.map((s: any, i: number) => (
+                {profile?.skills?.map((s, i: number) => (
                   <SkillBar 
                     key={i} 
                     skill={s.name} 

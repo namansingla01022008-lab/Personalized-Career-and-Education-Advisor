@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { auth } from '@/lib/auth'
 
-// Routes that require authentication
+// PathForge Protected Routes
 const protectedRoutes = ['/dashboard', '/onboarding', '/advisor', '/income', '/profile']
 
 export async function middleware(request: NextRequest) {
@@ -9,11 +10,12 @@ export async function middleware(request: NextRequest) {
 
   if (!isProtected) return NextResponse.next()
 
-  // For BetterAuth session check in middleware:
-  // We check for the session cookie directly for performance and Edge compatibility.
-  const sessionCookie = request.cookies.get('better-auth.session_token')
+  // Validate real session via BetterAuth API
+  const session = await auth.api.getSession({ 
+    headers: request.headers 
+  })
 
-  if (!sessionCookie) {
+  if (!session) {
     const signInUrl = new URL('/signin', request.url)
     signInUrl.searchParams.set('callbackUrl', pathname)
     return NextResponse.redirect(signInUrl)

@@ -31,7 +31,7 @@ export function useChat() {
       const reader = response.body?.getReader()
       const decoder = new TextDecoder()
       
-      let assistantMsg: Message = { role: 'assistant', content: '' }
+      const assistantMsg: Message = { role: 'assistant', content: '' }
       setMessages([...newMessages, assistantMsg])
 
       while (true) {
